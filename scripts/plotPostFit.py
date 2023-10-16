@@ -174,11 +174,12 @@ elif channel == "em":
 
 x_title = "BDT"
 y_title = "Events"
+"""
 if channel in ['tt','mt','et'] and category == '1':
   manual_blind = True
 if channel == 'em' and category in ['3','4']:
   manual_blind = True
-  
+"""  
 
 if args.dir and args.file and not args.postfitshapes:
   print 'Provide either directory or filename, not both'
@@ -201,8 +202,8 @@ histo_file = ROOT.TFile(shape_file)
 #Store plotting information for different backgrounds 
 background_schemes = {'mt':[backgroundComp("jet#rightarrow#tau_{h} fakes",["QCD"],TColor.GetColor(0,153,76)),backgroundComp("DYJets",["DYJets"], TColor.GetColor(248, 206, 104)),backgroundComp("ST",["ST"], TColor.GetColor(208,240,193)),backgroundComp("TT",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("VV",["VV"],TColor.GetColor(111,45,53)),backgroundComp("VH",["ZH_htt","WH_htt"],TColor.GetColor(255, 163, 4)),backgroundComp("VBF",["ggH_htt"],TColor.GetColor(187, 5, 30)),backgroundComp("ttH",["ttH_htt"],TColor.GetColor(255, 0, 255))],
 'et':[backgroundComp("jet#rightarrow#tau_{h} fakes",["QCD"],TColor.GetColor(0,153,76)),backgroundComp("DYJets",["DYJets"], TColor.GetColor(248, 206, 104)),backgroundComp("ST",["ST"], TColor.GetColor(208,240,193)),backgroundComp("TT",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("VV",["VV"],TColor.GetColor(111,45,53)),backgroundComp("VH",["ZH_htt","WH_htt"],TColor.GetColor(255, 163, 4)),backgroundComp("VBF",["ggH_htt"],TColor.GetColor(187, 5, 30)),backgroundComp("ttH",["ttH_htt"],TColor.GetColor(255, 0, 255))],
-'tt': [backgroundComp("electroweak",["ZL","ST","VV"],TColor.GetColor(222,90,106)),backgroundComp("tt",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("j#rightarrow#tau mis-id",["jetFakes","wFakes"],TColor.GetColor(0,153,76)),backgroundComp("Z#rightarrow#tau#tau",["ZTT"], TColor.GetColor(248, 206, 104)),backgroundComp("H(125)",["ggH_htt","qqH_htt","ZH_htt","WH_htt","ttH_htt"], ROOT.TColor.GetColor(250, 202, 255))],
-'em':[backgroundComp("electroweak",["ZL","ST","VV","W","TTVJets"],TColor.GetColor(222,90,106)),backgroundComp("QCD",["QCD"],ROOT.TColor.GetColor(0,153,76)),backgroundComp("tt",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("Z#rightarrow#tau#tau",["ZTT"], TColor.GetColor(248, 206, 104)),backgroundComp("H(125)",["ggH_htt", "qqH_htt", "ZH_htt", "WH_htt", "ttH_htt", "ggH_hww", "qqH_hww", "WH_hww", "ZH_hww", "ttH_hww"], ROOT.TColor.GetColor(250, 202, 255))]}
+'tt': [backgroundComp("electroweak",["ZL","ST","VV"],TColor.GetColor(222,90,106)),backgroundComp("tt",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("j#rightarrow#tau mis-id",["jetFakes","wFakes"],TColor.GetColor("#c6f74a")),backgroundComp("Z#rightarrow#tau#tau",["ZTT"], TColor.GetColor(248, 206, 104)),backgroundComp("H(125)",["ggH_htt","qqH_htt","ZH_htt","WH_htt","ttH_htt"], ROOT.TColor.GetColor(250, 202, 255))],
+'em':[backgroundComp("electroweak",["ZL","ST","VV","W","TTVJets"],TColor.GetColor(222,90,106)),backgroundComp("QCD",["QCD"],TColor.GetColor("#c6f74a")),backgroundComp("tt",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("Z#rightarrow#tau#tau",["ZTT"], TColor.GetColor(248, 206, 104)),backgroundComp("H(125)",["ggH_htt", "qqH_htt", "ZH_htt", "WH_htt", "ttH_htt", "ggH_hww", "qqH_hww", "WH_hww", "ZH_hww", "ttH_hww"], ROOT.TColor.GetColor(250, 202, 255))]}
 signal_schemes = {'mt' :[signalComp("bbH+ggH",['bbH_htt','ggH_bb_htt','intH_bb_htt'],2,1,100)],
 'et' :[signalComp("bbH+ggH",['bbH_htt','ggH_bb_htt','intH_bb_htt'],2,1,100)],
 'tt' :[signalComp("bbH#tau#tau",['bbH_htt','ggH_bb_htt','intH_bb_htt'],4,1,50)],
@@ -457,7 +458,7 @@ bkg_histos.reverse()
 background_schemes[channel].reverse()
 for legi,hists in enumerate(bkg_histos):
   legend.AddEntry(hists,background_schemes[channel][legi]['leg_text'],"f")
-legend.AddEntry(bkghist,"Stat. Uncertainty","f")
+legend.AddEntry(bkghist,"Total Uncertainty","f")
 
 if not args.no_signal:
   for legi,hists in enumerate(sig_histos):
@@ -475,7 +476,7 @@ latex2.SetTextSize(0.04)
 latex2.DrawLatex(0.2,0.75,channel_label)
 
 #CMS and lumi labels
-plot.FixTopRange(pads[0], plot.GetPadYMax(pads[0]), extra_pad if extra_pad>0 else 0.30)
+plot.FixTopRange(pads[0], plot.GetPadYMax(pads[0]), extra_pad if extra_pad>0 else 0.37)
 plot.DrawCMSLogo(pads[0], 'CMS', 'Internal', 11, 0.045, 0.05, 1.0, '', 1.0)
 plot.DrawTitle(pads[0], lumi, 3)
 
