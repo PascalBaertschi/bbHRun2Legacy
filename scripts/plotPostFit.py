@@ -155,7 +155,10 @@ categories = {
          '3': 'Htt signal class',
          '4': 'HWW signal class'}}
 
+mode_sig = 'prefit'
 file_dir = 'bbhtt_'+channel+'_'+category+'_13TeV'+year+'_'+mode
+file_dir_sig = 'bbhtt_'+channel+'_'+category+'_13TeV'+year+'_'+mode_sig
+
 if year=="2018":
   lumi = "2018 59.7 fb^{-1} (13 TeV)"
 elif year=="2017":
@@ -200,39 +203,41 @@ shape_file_name=args.file
 histo_file = ROOT.TFile(shape_file)
 
 #Store plotting information for different backgrounds 
-background_schemes = {'mt':[backgroundComp("jet#rightarrow#tau_{h} fakes",["QCD"],TColor.GetColor(0,153,76)),backgroundComp("DYJets",["DYJets"], TColor.GetColor(248, 206, 104)),backgroundComp("ST",["ST"], TColor.GetColor(208,240,193)),backgroundComp("TT",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("VV",["VV"],TColor.GetColor(111,45,53)),backgroundComp("VH",["ZH_htt","WH_htt"],TColor.GetColor(255, 163, 4)),backgroundComp("VBF",["ggH_htt"],TColor.GetColor(187, 5, 30)),backgroundComp("ttH",["ttH_htt"],TColor.GetColor(255, 0, 255))],
-'et':[backgroundComp("jet#rightarrow#tau_{h} fakes",["QCD"],TColor.GetColor(0,153,76)),backgroundComp("DYJets",["DYJets"], TColor.GetColor(248, 206, 104)),backgroundComp("ST",["ST"], TColor.GetColor(208,240,193)),backgroundComp("TT",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("VV",["VV"],TColor.GetColor(111,45,53)),backgroundComp("VH",["ZH_htt","WH_htt"],TColor.GetColor(255, 163, 4)),backgroundComp("VBF",["ggH_htt"],TColor.GetColor(187, 5, 30)),backgroundComp("ttH",["ttH_htt"],TColor.GetColor(255, 0, 255))],
-'tt': [backgroundComp("electroweak",["ZL","ST","VV"],TColor.GetColor(222,90,106)),backgroundComp("tt",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("j#rightarrow#tau mis-id",["jetFakes","wFakes"],TColor.GetColor("#c6f74a")),backgroundComp("Z#rightarrow#tau#tau",["ZTT"], TColor.GetColor(248, 206, 104)),backgroundComp("H(125)",["ggH_htt","qqH_htt","ZH_htt","WH_htt","ttH_htt"], ROOT.TColor.GetColor(250, 202, 255))],
-'em':[backgroundComp("electroweak",["ZL","ST","VV","W","TTVJets"],TColor.GetColor(222,90,106)),backgroundComp("QCD",["QCD"],TColor.GetColor("#c6f74a")),backgroundComp("tt",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("Z#rightarrow#tau#tau",["ZTT"], TColor.GetColor(248, 206, 104)),backgroundComp("H(125)",["ggH_htt", "qqH_htt", "ZH_htt", "WH_htt", "ttH_htt", "ggH_hww", "qqH_hww", "WH_hww", "ZH_hww", "ttH_hww"], ROOT.TColor.GetColor(250, 202, 255))]}
+background_schemes = {'mt':[backgroundComp("H(125)",["ggH_htt","qqH_htt","ZH_htt","WH_htt","ttH_htt"], ROOT.TColor.GetColor(250, 202, 255)),backgroundComp("jet#rightarrow#tau_{h} fakes",["QCD"],TColor.GetColor(0,153,76)),backgroundComp("DYJets",["DYJets"], TColor.GetColor(248, 206, 104)),backgroundComp("ST",["ST"], TColor.GetColor(208,240,193)),backgroundComp("TT",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("VV",["VV"],TColor.GetColor(111,45,53))],
+'et':[backgroundComp("H(125)",["ggH_htt","qqH_htt","ZH_htt","WH_htt","ttH_htt"], ROOT.TColor.GetColor(250, 202, 255)),backgroundComp("jet#rightarrow#tau_{h} fakes",["QCD"],TColor.GetColor(0,153,76)),backgroundComp("DYJets",["DYJets"], TColor.GetColor(248, 206, 104)),backgroundComp("ST",["ST"], TColor.GetColor(208,240,193)),backgroundComp("TT",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("VV",["VV"],TColor.GetColor(111,45,53))],
+'tt': [backgroundComp("H(125)",["ggH_htt","qqH_htt","ZH_htt","WH_htt","ttH_htt"], ROOT.TColor.GetColor(250, 202, 255)),backgroundComp("electroweak",["ZL","ST","VV"],TColor.GetColor(222,90,106)),backgroundComp("tt",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("j#rightarrow#tau mis-id",["jetFakes","wFakes"],TColor.GetColor("#c6f74a")),backgroundComp("Z#rightarrow#tau#tau",["ZTT"], TColor.GetColor(248, 206, 104))],
+'em':[backgroundComp("H(125)",["ggH_htt", "qqH_htt", "ZH_htt", "WH_htt", "ttH_htt", "ggH_hww", "qqH_hww", "WH_hww", "ZH_hww", "ttH_hww"], ROOT.TColor.GetColor(250, 202, 255)),backgroundComp("electroweak",["ZL","ST","VV","W","TTVJets"],TColor.GetColor(222,90,106)),backgroundComp("QCD",["QCD"],TColor.GetColor("#c6f74a")),backgroundComp("tt",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("Z#rightarrow#tau#tau",["ZTT"], TColor.GetColor(248, 206, 104))]}
 signal_schemes = {'mt' :[signalComp("bbH+ggH",['bbH_htt','ggH_bb_htt','intH_bb_htt'],2,1,100)],
 'et' :[signalComp("bbH+ggH",['bbH_htt','ggH_bb_htt','intH_bb_htt'],2,1,100)],
 'tt' :[signalComp("bbH#tau#tau",['bbH_htt','ggH_bb_htt','intH_bb_htt'],4,1,50)],
 'em' :[signalComp("bbH#tau#tau",['bbH_htt','ggH_bb_htt','intH_bb_htt'],4,1,50),signalComp("bbHWW",['bbH_hww','ggH_bb_hww','intH_bb_hww'],7,1,50)]}
 
+if channel=="em" and category=="1": #no QCD process for tt class of em channel
+  background_schemes = {'em': [backgroundComp("H(125)",["ggH_htt", "qqH_htt", "ZH_htt", "WH_htt", "ttH_htt", "ggH_hww", "qqH_hww", "WH_hww", "ZH_hww", "ttH_hww"], ROOT.TColor.GetColor(250, 202, 255)),backgroundComp("electroweak",["ZL","ST","VV","W","TTVJets"],TColor.GetColor(222,90,106)),backgroundComp("tt",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("Z#rightarrow#tau#tau",["ZTT"], TColor.GetColor(248, 206, 104))]}
+
 
 #Extract relevent histograms from shape file
-
 sig_histos = []
 for i,t in enumerate(signal_schemes[channel]):
   plots = t['plot_list']
   h = ROOT.TH1F()
   for j,k in enumerate(plots):
-    if h.GetEntries()==0 and getHistogram(histo_file,k, file_dir,mode,logx=log_x) is not None:
+    if h.GetEntries()==0 and getHistogram(histo_file,k, file_dir_sig,mode_sig,logx=log_x) is not None:
       if not uniform:
-        h = getHistogram(histo_file,k, file_dir,mode, logx=log_x)[0]
+        h = getHistogram(histo_file,k, file_dir_sig,mode_sig, logx=log_x)[0]
       else :
-        htemp = getHistogram(histo_file,k,file_dir, mode,logx=log_x)[0]
+        htemp = getHistogram(histo_file,k,file_dir_sig, mode_sig,logx=log_x)[0]
         h = ROOT.TH1F(k,k,htemp.GetNbinsX(),0,htemp.GetNbinsX())
         for bp in range(0,htemp.GetNbinsX()):
           h.SetBinContent(bp+1,htemp.GetBinContent(bp+1))
           h.SetBinError(bp+1,htemp.GetBinError(bp+1))
       h.SetName(k)
     else:
-      if getHistogram(histo_file,k, file_dir,mode, logx=log_x) is not None:
+      if getHistogram(histo_file,k, file_dir_sig,mode_sig, logx=log_x) is not None:
         if not uniform:
-          h.Add(getHistogram(histo_file,k, file_dir,mode,logx=log_x)[0])
+          h.Add(getHistogram(histo_file,k, file_dir_sig,mode_sig,logx=log_x)[0])
         else :
-          htemp = getHistogram(histo_file,k,file_dir, mode,logx=log_x)[0]
+          htemp = getHistogram(histo_file,k,file_dir_sig, mode_sig,logx=log_x)[0]
           htemp2 = ROOT.TH1F(k,k,htemp.GetNbinsX(),0,htemp.GetNbinsX())
           for bp in range(0,htemp.GetNbinsX()):
             htemp2.SetBinContent(bp+1,htemp.GetBinContent(bp+1))
@@ -244,7 +249,7 @@ for i,t in enumerate(signal_schemes[channel]):
   h.Scale(t['norm'])
   sig_histos.append(h)
 
-sighist = getHistogram(histo_file,'TotalSig', file_dir, mode, args.no_signal, log_x)[0]
+sighist = getHistogram(histo_file,'TotalSig', file_dir_sig, mode_sig, args.no_signal, log_x)[0]
 if sb_vs_b_ratio:
     sbhist = getHistogram(histo_file,'TotalProcs',file_dir, mode, args.no_signal, log_x)[0]
     bkg_sb_vs_b_ratio_hist = getHistogram(histo_file,'TotalBkg',file_dir, mode, logx=log_x)[0]
@@ -411,7 +416,7 @@ if not custom_y_range: axish[0].SetMaximum(extra_pad*bkghist.GetMaximum())
 if not custom_y_range: 
   if(log_y): 
     if channel == "mt" or channel == "et":
-      axish[0].SetMinimum(10.)
+      axish[0].SetMinimum(1.)
     else:
       axish[0].SetMinimum(1.)
   else: axish[0].SetMinimum(0)
@@ -529,6 +534,9 @@ pads[0].RedrawAxis()
 
 
 #Save as png and pdf with some semi sensible filename
-outname = mode+'/'+file_dir
+if mode == "postfit":
+  outname = mode+'_unblinded/'+file_dir
+else:
+  outname = mode+'/'+file_dir
 c2.SaveAs("%(outname)s.png"%vars())
 c2.SaveAs("%(outname)s.pdf"%vars())
