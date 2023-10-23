@@ -560,4 +560,4 @@ if mode == "postfit":
 else:
   outname = mode+'/'+file_dir
 c2.SaveAs("%(outname)s.png"%vars())
-#c2.SaveAs("%(outname)s.pdf"%vars())
+c2.SaveAs("%(outname)s.pdf"%vars())
