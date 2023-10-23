@@ -192,9 +192,9 @@ if not args.dir and not args.file and not args.postfitshapes:
   print 'Provide one of directory or filename'
   sys.exit(1)
 
-if args.postfitshapes and not args.dir:
-  print 'Provide directory when running with --postfitshapes option'
-  sys.exit(1)
+#if args.postfitshapes and not args.dir:
+#  print 'Provide directory when running with --postfitshapes option'
+#  sys.exit(1)
  
 print "Providing shape file: ", args.file, ", with specified subdir name: ", file_dir
 shape_file=args.file
@@ -203,17 +203,38 @@ shape_file_name=args.file
 histo_file = ROOT.TFile(shape_file)
 
 #Store plotting information for different backgrounds 
-background_schemes = {'mt':[backgroundComp("H(125)",["ggH_htt","qqH_htt","ZH_htt","WH_htt","ttH_htt"], ROOT.TColor.GetColor(250, 202, 255)),backgroundComp("jet#rightarrow#tau_{h} fakes",["QCD"],TColor.GetColor(0,153,76)),backgroundComp("DYJets",["DYJets"], TColor.GetColor(248, 206, 104)),backgroundComp("ST",["ST"], TColor.GetColor(208,240,193)),backgroundComp("TT",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("VV",["VV"],TColor.GetColor(111,45,53))],
-'et':[backgroundComp("H(125)",["ggH_htt","qqH_htt","ZH_htt","WH_htt","ttH_htt"], ROOT.TColor.GetColor(250, 202, 255)),backgroundComp("jet#rightarrow#tau_{h} fakes",["QCD"],TColor.GetColor(0,153,76)),backgroundComp("DYJets",["DYJets"], TColor.GetColor(248, 206, 104)),backgroundComp("ST",["ST"], TColor.GetColor(208,240,193)),backgroundComp("TT",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("VV",["VV"],TColor.GetColor(111,45,53))],
-'tt': [backgroundComp("H(125)",["ggH_htt","qqH_htt","ZH_htt","WH_htt","ttH_htt"], ROOT.TColor.GetColor(250, 202, 255)),backgroundComp("electroweak",["ZL","ST","VV"],TColor.GetColor(222,90,106)),backgroundComp("tt",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("j#rightarrow#tau mis-id",["jetFakes","wFakes"],TColor.GetColor("#c6f74a")),backgroundComp("Z#rightarrow#tau#tau",["ZTT"], TColor.GetColor(248, 206, 104))],
-'em':[backgroundComp("H(125)",["ggH_htt", "qqH_htt", "ZH_htt", "WH_htt", "ttH_htt", "ggH_hww", "qqH_hww", "WH_hww", "ZH_hww", "ttH_hww"], ROOT.TColor.GetColor(250, 202, 255)),backgroundComp("electroweak",["ZL","ST","VV","W","TTVJets"],TColor.GetColor(222,90,106)),backgroundComp("QCD",["QCD"],TColor.GetColor("#c6f74a")),backgroundComp("tt",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("Z#rightarrow#tau#tau",["ZTT"], TColor.GetColor(248, 206, 104))]}
-signal_schemes = {'mt' :[signalComp("bbH+ggH",['bbH_htt','ggH_bb_htt','intH_bb_htt'],2,1,100)],
-'et' :[signalComp("bbH+ggH",['bbH_htt','ggH_bb_htt','intH_bb_htt'],2,1,100)],
+background_schemes = {
+  'mt':[backgroundComp("H(125)",["ZH_htt","WH_htt","ggH_htt","ttH_htt"],TColor.GetColor(250, 202, 255)),
+        backgroundComp("electroweak",["ST","VV"],TColor.GetColor(222,90,106)),
+        backgroundComp("jet#rightarrow#tau_{h} fakes",["QCD"],TColor.GetColor("#c6f74a")),
+	backgroundComp("t#bar{t}",["TT"], TColor.GetColor(155, 152, 204)),
+	backgroundComp("Drell-Yan",["DYJets"], TColor.GetColor(248, 206, 104))],
+  'et':[backgroundComp("H(125)",["ZH_htt","WH_htt","ggH_htt","ttH_htt"],TColor.GetColor(250, 202, 255)),
+        backgroundComp("electroweak",["ST","VV"],TColor.GetColor(222,90,106)),
+        backgroundComp("jet#rightarrow#tau_{h} fakes",["QCD"],TColor.GetColor("#c6f74a")),
+	backgroundComp("t#bar{t}",["TT"], TColor.GetColor(155, 152, 204)),
+	backgroundComp("Drell-Yan",["DYJets"], TColor.GetColor(248, 206, 104))],
+  'tt': [backgroundComp("H(125)",["ggH_htt","qqH_htt","ZH_htt","WH_htt","ttH_htt"], ROOT.TColor.GetColor(250, 202, 255)),
+         backgroundComp("electroweak",["ST","VV"],TColor.GetColor(222,90,106)),
+         backgroundComp("j#rightarrow#tau mis-id",["jetFakes","wFakes"],TColor.GetColor("#c6f74a")),
+         backgroundComp("t#bar{t}",["TT"], TColor.GetColor(155, 152, 204)),
+	 backgroundComp("Drell-Yan",["ZTT","ZL"], TColor.GetColor(248, 206, 104))],
+  'em':[backgroundComp("H(125)",["ggH_htt", "qqH_htt", "ZH_htt", "WH_htt", "ttH_htt", "ggH_hww", "qqH_hww", "WH_hww", "ZH_hww", "ttH_hww"], ROOT.TColor.GetColor(250, 202, 255)),
+        backgroundComp("electroweak",["ST","VV","W","TTVJets"],TColor.GetColor(222,90,106)),
+	backgroundComp("QCD",["QCD"],ROOT.TColor.GetColor("#c6f74a")),
+	backgroundComp("t#bar{t}",["TT"], TColor.GetColor(155, 152, 204)),
+	backgroundComp("Drell-Yan",["ZTT","ZL"], TColor.GetColor(248, 206, 104))]}
+
+signal_schemes = {'mt' :[signalComp("bbH+ggH",['bbH_htt','ggH_bb_htt','intH_bb_htt'],4,1,50)],
+'et' :[signalComp("bbH+ggH",['bbH_htt','ggH_bb_htt','intH_bb_htt'],4,1,50)],
 'tt' :[signalComp("bbH#tau#tau",['bbH_htt','ggH_bb_htt','intH_bb_htt'],4,1,50)],
 'em' :[signalComp("bbH#tau#tau",['bbH_htt','ggH_bb_htt','intH_bb_htt'],4,1,50),signalComp("bbHWW",['bbH_hww','ggH_bb_hww','intH_bb_hww'],7,1,50)]}
 
 if channel=="em" and category=="1": #no QCD process for tt class of em channel
-  background_schemes = {'em': [backgroundComp("H(125)",["ggH_htt", "qqH_htt", "ZH_htt", "WH_htt", "ttH_htt", "ggH_hww", "qqH_hww", "WH_hww", "ZH_hww", "ttH_hww"], ROOT.TColor.GetColor(250, 202, 255)),backgroundComp("electroweak",["ZL","ST","VV","W","TTVJets"],TColor.GetColor(222,90,106)),backgroundComp("tt",["TT"], TColor.GetColor(155, 152, 204)),backgroundComp("Z#rightarrow#tau#tau",["ZTT"], TColor.GetColor(248, 206, 104))]}
+  background_schemes = {'em':[backgroundComp("H(125)",["ggH_htt", "qqH_htt", "ZH_htt", "WH_htt", "ttH_htt", "ggH_hww", "qqH_hww", "WH_hww", "ZH_hww", "ttH_hww"], ROOT.TColor.GetColor(250, 202, 255)),
+        backgroundComp("electroweak",["ST","VV","W","TTVJets"],TColor.GetColor(222,90,106)),
+	backgroundComp("t#bar{t}",["TT"], TColor.GetColor(155, 152, 204)),
+	backgroundComp("Drell-Yan",["ZTT","ZL"], TColor.GetColor(248, 206, 104))]}
 
 
 #Extract relevent histograms from shape file
@@ -245,7 +266,7 @@ for i,t in enumerate(signal_schemes[channel]):
           h.Add(htemp2)
   h.SetLineColor(t['colour'])
   h.SetLineStyle(t['style'])
-  h.SetLineWidth(2)
+  h.SetLineWidth(3)
   h.Scale(t['norm'])
   sig_histos.append(h)
 
@@ -535,8 +556,8 @@ pads[0].RedrawAxis()
 
 #Save as png and pdf with some semi sensible filename
 if mode == "postfit":
-  outname = mode+'_unblinded/'+file_dir
+  outname = mode+'/'+file_dir
 else:
   outname = mode+'/'+file_dir
 c2.SaveAs("%(outname)s.png"%vars())
-c2.SaveAs("%(outname)s.pdf"%vars())
+#c2.SaveAs("%(outname)s.pdf"%vars())
